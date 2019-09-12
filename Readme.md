@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Юрий Бадьин](https://up.htmlacademy.ru/javascript/18/user/1009883).
-* Наставник: `Неизвестно`.
+* Наставник: [Денис Байдаров](https://up.htmlacademy.ru/javascript/18/user/7956).
 
 ---
 
