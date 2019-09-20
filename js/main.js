@@ -108,6 +108,12 @@ var fillPhotos = function (photosData) {
   picturesElement.appendChild(fragment);
 };
 
+var clearElementContent = function (element) {
+  while (element.firstChild) {
+    element.removeChild(element.firstChild);
+  }
+};
+
 var renderComment = function (commentObject) {
   var comment = commentElement.cloneNode(true);
 
@@ -124,9 +130,7 @@ var fillBigPicture = function (photoData) {
   bigPictureElement.querySelector('.comments-count').textContent = photoData.comments.length;
   bigPictureElement.querySelector('.social__caption').textContent = photoData.description;
 
-  while (commentsListElement.firstChild) {
-    commentsListElement.removeChild(commentsListElement.firstChild);
-  }
+  clearElementContent(commentsListElement);
 
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < photoData.comments.length; i++) {
