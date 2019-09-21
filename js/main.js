@@ -1,14 +1,5 @@
 'use strict';
 
-var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
-var picturesElement = document.querySelector('.pictures');
-
-var bigPictureElement = document.querySelector('.big-picture');
-var commentsListElement = bigPictureElement.querySelector('.social__comments');
-var commentElement = commentsListElement.querySelector('.social__comment');
-var bigPictureCommentsCounter = bigPictureElement.querySelector('.social__comment-count');
-var commentsLoader = bigPictureElement.querySelector('.comments-loader');
-
 var DATA_AMOUNT = 25;
 var DESCRIPTION_ARRAY = ['Мое Фото', 'Просто фотография', 'Очередное фото'];
 var MIN_LIKES = 15;
@@ -18,6 +9,15 @@ var MAX_COMMENTS = 15;
 var AVATARS_AMOUNT = 6;
 var COMMENTS_MESSAGES = ['Всё отлично!', 'В целом всё неплохо.Но не всё.', 'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.', 'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.', 'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.', 'Лица у людей на фотке перекошены, как будто их избивают.Как можно было поймать такой неудачный момент?!'];
 var COMMENTS_NAMES = ['Артем', 'Маша', 'Вася', 'Лера'];
+
+var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
+var picturesElement = document.querySelector('.pictures');
+
+var bigPictureElement = document.querySelector('.big-picture');
+var commentsListElement = bigPictureElement.querySelector('.social__comments');
+var commentElement = commentsListElement.querySelector('.social__comment');
+var bigPictureCommentsCounter = bigPictureElement.querySelector('.social__comment-count');
+var commentsLoader = bigPictureElement.querySelector('.comments-loader');
 
 var getRandomFromArray = function (arr) {
   return arr[Math.floor(Math.random() * arr.length)];
