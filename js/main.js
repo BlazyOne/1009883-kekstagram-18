@@ -228,7 +228,7 @@ var getEffectNumber = function () {
 };
 
 var setEffectNumber = function (value) {
-  effectLevelValueElement.value = value;
+  effectLevelValueElement.value = Math.round(value);
 };
 
 var clearEffectStyles = function () {
