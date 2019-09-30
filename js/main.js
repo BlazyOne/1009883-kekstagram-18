@@ -271,6 +271,7 @@ var renderEffects = function () {
 
   if (effectName !== 'none') {
     effectLevelElement.classList.remove('hidden');
+    previewImageElement.classList.add(EFFECTS_STYLE_PREFIX + effectName);
   }
 
   switch (effectName) {
@@ -279,23 +280,18 @@ var renderEffects = function () {
       previewImageElement.style.filter = '';
       break;
     case 'chrome':
-      previewImageElement.classList.add(EFFECTS_STYLE_PREFIX + effectName);
       previewImageElement.style.filter = 'grayscale(' + getEffectStyleNumber(effectNumber, EFFECT.chrome.min, EFFECT.chrome.max) + ')';
       break;
     case 'sepia':
-      previewImageElement.classList.add(EFFECTS_STYLE_PREFIX + effectName);
       previewImageElement.style.filter = 'sepia(' + getEffectStyleNumber(effectNumber, EFFECT.sepia.min, EFFECT.sepia.max) + ')';
       break;
     case 'marvin':
-      previewImageElement.classList.add(EFFECTS_STYLE_PREFIX + effectName);
       previewImageElement.style.filter = 'invert(' + getEffectStyleNumber(effectNumber, EFFECT.marvin.min, EFFECT.marvin.max) + '%)';
       break;
     case 'phobos':
-      previewImageElement.classList.add(EFFECTS_STYLE_PREFIX + effectName);
       previewImageElement.style.filter = 'blur(' + getEffectStyleNumber(effectNumber, EFFECT.phobos.min, EFFECT.phobos.max) + 'px)';
       break;
     case 'heat':
-      previewImageElement.classList.add(EFFECTS_STYLE_PREFIX + effectName);
       previewImageElement.style.filter = 'brightness(' + getEffectStyleNumber(effectNumber, EFFECT.heat.min, EFFECT.heat.max) + ')';
       break;
   }
