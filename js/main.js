@@ -39,6 +39,7 @@ var EFFECT = {
     max: 3
   }
 };
+var EFFECTS_STYLE_PREFIX = 'effects__preview--';
 var HASHTAG_MAX_NUMBER = 5;
 var HASHTAG_MAX_LENGTH = 20;
 var DESCRIPTION_MAX_LENGTH = 140;
@@ -266,33 +267,37 @@ var renderEffects = function () {
   var effectNumber = effectLevelValueElement.value;
   clearEffectStyles();
 
-  if (uploadOverlayElement.querySelector('#effect-none').checked) {
-    effectLevelElement.classList.add('hidden');
-    previewImageElement.style.filter = '';
-  } else {
+  var effectName = uploadOverlayElement.querySelector('input[name=effect]:checked').value;
+
+  if (effectName !== 'none') {
     effectLevelElement.classList.remove('hidden');
   }
 
-  if (uploadOverlayElement.querySelector('#effect-chrome').checked) {
-    previewImageElement.classList.add('effects__preview--chrome');
-    var chromeNumber = getEffectStyleNumber(effectNumber, EFFECT.chrome.min, EFFECT.chrome.max);
-    previewImageElement.style.filter = 'grayscale(' + chromeNumber + ')';
-  } else if (uploadOverlayElement.querySelector('#effect-sepia').checked) {
-    previewImageElement.classList.add('effects__preview--sepia');
-    var sepiaNumber = getEffectStyleNumber(effectNumber, EFFECT.sepia.min, EFFECT.sepia.max);
-    previewImageElement.style.filter = 'sepia(' + sepiaNumber + ')';
-  } else if (uploadOverlayElement.querySelector('#effect-marvin').checked) {
-    previewImageElement.classList.add('effects__preview--marvin');
-    var marvinNumber = getEffectStyleNumber(effectNumber, EFFECT.marvin.min, EFFECT.marvin.max);
-    previewImageElement.style.filter = 'invert(' + marvinNumber + '%)';
-  } else if (uploadOverlayElement.querySelector('#effect-phobos').checked) {
-    previewImageElement.classList.add('effects__preview--phobos');
-    var phobosNumber = getEffectStyleNumber(effectNumber, EFFECT.phobos.min, EFFECT.phobos.max);
-    previewImageElement.style.filter = 'blur(' + phobosNumber + 'px)';
-  } else if (uploadOverlayElement.querySelector('#effect-heat').checked) {
-    previewImageElement.classList.add('effects__preview--heat');
-    var heatNumber = getEffectStyleNumber(effectNumber, EFFECT.heat.min, EFFECT.heat.max);
-    previewImageElement.style.filter = 'brightness(' + heatNumber + ')';
+  switch (effectName) {
+    case 'none':
+      effectLevelElement.classList.add('hidden');
+      previewImageElement.style.filter = '';
+      break;
+    case 'chrome':
+      previewImageElement.classList.add(EFFECTS_STYLE_PREFIX + effectName);
+      previewImageElement.style.filter = 'grayscale(' + getEffectStyleNumber(effectNumber, EFFECT.chrome.min, EFFECT.chrome.max) + ')';
+      break;
+    case 'sepia':
+      previewImageElement.classList.add(EFFECTS_STYLE_PREFIX + effectName);
+      previewImageElement.style.filter = 'sepia(' + getEffectStyleNumber(effectNumber, EFFECT.sepia.min, EFFECT.sepia.max) + ')';
+      break;
+    case 'marvin':
+      previewImageElement.classList.add(EFFECTS_STYLE_PREFIX + effectName);
+      previewImageElement.style.filter = 'invert(' + getEffectStyleNumber(effectNumber, EFFECT.marvin.min, EFFECT.marvin.max) + '%)';
+      break;
+    case 'phobos':
+      previewImageElement.classList.add(EFFECTS_STYLE_PREFIX + effectName);
+      previewImageElement.style.filter = 'blur(' + getEffectStyleNumber(effectNumber, EFFECT.phobos.min, EFFECT.phobos.max) + 'px)';
+      break;
+    case 'heat':
+      previewImageElement.classList.add(EFFECTS_STYLE_PREFIX + effectName);
+      previewImageElement.style.filter = 'brightness(' + getEffectStyleNumber(effectNumber, EFFECT.heat.min, EFFECT.heat.max) + ')';
+      break;
   }
 
   effectLevelPinElement.style.left = effectNumber + '%';
@@ -341,23 +346,29 @@ var checkHashtagValidity = function () {
   var validityMessage = '';
 
   for (var i = 0; i < hashtagArray.length; i++) {
-    if (hashtagArray[i].indexOf(',') > -1 || hashtagArray[i].indexOf(';') > -1) {
-      validityMessage = 'Хэштеги должны разделяться пробелами';
+    if ((hashtagArray[i].indexOf(',') > -1 || hashtagArray[i].indexOf(';') > -1) && !isSpaces) {
+      validityMessage += 'Хэштеги должны разделяться пробелами. ';
+      var isSpaces = true;
     }
-    if (hashtagArray[i][0] !== '#') {
-      validityMessage = 'хэш-тег должен начинаться с символа #';
+    if (hashtagArray[i][0] !== '#' && !isNoHashSign) {
+      validityMessage += 'Хэш-тег должен начинаться с символа #. ';
+      var isNoHashSign = true;
     }
-    if (hashtagArray[i].length === 1) {
-      validityMessage = 'хеш-тег не может состоять только из одной решётки';
+    if (hashtagArray[i].length === 1 && !isOneCharacterLength) {
+      validityMessage += 'Хеш-тег не может состоять только из одной решётки. ';
+      var isOneCharacterLength = true;
     }
-    if (findSameInArray(hashtagArray)) {
-      validityMessage = 'один и тот же хэш-тег не может быть использован дважды';
+    if (findSameInArray(hashtagArray) && !isSameInArray) {
+      validityMessage += 'Один и тот же хэш-тег не может быть использован дважды. ';
+      var isSameInArray = true;
     }
-    if (hashtagArray.length > HASHTAG_MAX_NUMBER) {
-      validityMessage = 'нельзя указать больше' + HASHTAG_MAX_NUMBER + 'хэш-тегов';
+    if (hashtagArray.length > HASHTAG_MAX_NUMBER && !isMoreThanMaxHashtagNumber) {
+      validityMessage += 'Нельзя указать больше ' + HASHTAG_MAX_NUMBER + ' хэш-тегов. ';
+      var isMoreThanMaxHashtagNumber = true;
     }
-    if (hashtagArray[i].length > HASHTAG_MAX_LENGTH) {
-      validityMessage = 'максимальная длина одного хэш-тега' + HASHTAG_MAX_LENGTH + 'символов, включая решётку';
+    if (hashtagArray[i].length > HASHTAG_MAX_LENGTH && !isMoreThanMaxHashtagLength) {
+      validityMessage += 'Максимальная длина одного хэш-тега ' + HASHTAG_MAX_LENGTH + ' символов, включая решётку. ';
+      var isMoreThanMaxHashtagLength = true;
     }
   }
 
