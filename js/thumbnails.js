@@ -11,6 +11,10 @@
     photoElement.querySelector('.picture__likes').textContent = photoObject.likes;
     photoElement.querySelector('.picture__comments').textContent = photoObject.comments.length;
 
+    photoElement.addEventListener('click', function () {
+      window.picture.showBigPicture(photoObject);
+    });
+
     return photoElement;
   };
 
