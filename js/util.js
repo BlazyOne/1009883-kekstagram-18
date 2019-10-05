@@ -44,6 +44,11 @@
     },
     clearValue: function (element) {
       element.value = null;
+    },
+    createLoadErrorElement: function () {
+      var errorElement = document.querySelector('#error').content.querySelector('.error');
+      document.querySelector('main').append(errorElement);
+      return errorElement;
     }
   };
 })();

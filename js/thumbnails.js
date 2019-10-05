@@ -1,6 +1,9 @@
 'use strict';
 
 (function () {
+  var PICTURES_DOWNLOAD_URL = 'https://js.dump.academy/kekstagram/data';
+  var PICTURES_DOWNLOAD_TYPE = 'GET';
+
   var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
   var picturesElement = document.querySelector('.pictures');
 
@@ -26,5 +29,13 @@
     picturesElement.appendChild(fragment);
   };
 
-  fillPhotos(window.data.mockArray);
+  var onPicturesDownloadError = function (errorMessage) {
+    var errorElement = window.util.createLoadErrorElement();
+    var errorTitle = errorElement.querySelector('.error__title');
+
+    errorTitle.style.lineHeight = '1.5';
+    errorTitle.textContent = 'Ошибка загрузки файла изображений. ' + errorMessage;
+  };
+
+  window.backend.load(PICTURES_DOWNLOAD_URL, PICTURES_DOWNLOAD_TYPE, fillPhotos, onPicturesDownloadError);
 })();
