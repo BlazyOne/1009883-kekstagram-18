@@ -47,7 +47,33 @@
     },
     createLoadErrorElement: function () {
       var errorElement = document.querySelector('#error').content.querySelector('.error');
+      var errorInner = errorElement.querySelector('.error__inner');
+      var errorTitle = errorElement.querySelector('.error__title');
+      var errorButtons = errorElement.querySelectorAll('.error__button');
+
+      var onErrorElementEscPress = function (evt) {
+        window.util.isEscEvent(evt, function () {
+          errorElement.remove();
+          document.removeEventListener('keydown', onErrorElementEscPress);
+        });
+      };
+
+      errorTitle.style.lineHeight = '1.5';
       document.querySelector('main').append(errorElement);
+
+      for (var i = 0; i < errorButtons.length; i++) {
+        errorButtons[i].addEventListener('click', function () {
+          errorElement.remove();
+        });
+      }
+      document.addEventListener('keydown', onErrorElementEscPress);
+      errorInner.addEventListener('click', function (evt) {
+        evt.stopPropagation();
+      });
+      errorElement.addEventListener('click', function () {
+        errorElement.remove();
+      });
+
       return errorElement;
     }
   };

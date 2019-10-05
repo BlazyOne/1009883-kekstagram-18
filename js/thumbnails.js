@@ -33,7 +33,6 @@
     var errorElement = window.util.createLoadErrorElement();
     var errorTitle = errorElement.querySelector('.error__title');
 
-    errorTitle.style.lineHeight = '1.5';
     errorTitle.textContent = 'Ошибка загрузки файла изображений. ' + errorMessage;
   };
 
