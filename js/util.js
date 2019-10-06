@@ -58,6 +58,7 @@
         });
       };
 
+      errorElement.style.zIndex = '3';
       errorTitle.style.lineHeight = '1.5';
       document.querySelector('main').append(errorElement);
 
@@ -75,6 +76,38 @@
       });
 
       return errorElement;
+    },
+    createLoadSuccessElement: function () {
+      var successElement = document.querySelector('#success').content.querySelector('.success');
+      var successInner = successElement.querySelector('.success__inner');
+      var successTitle = successElement.querySelector('.success__title');
+      var successButtons = successElement.querySelectorAll('.success__button');
+
+      var onSuccessElementEscPress = function (evt) {
+        window.util.isEscEvent(evt, function () {
+          successElement.remove();
+          document.removeEventListener('keydown', onSuccessElementEscPress);
+        });
+      };
+
+      successElement.style.zIndex = '3';
+      successTitle.style.lineHeight = '1.5';
+      document.querySelector('main').append(successElement);
+
+      for (var i = 0; i < successButtons.length; i++) {
+        successButtons[i].addEventListener('click', function () {
+          successElement.remove();
+        });
+      }
+      document.addEventListener('keydown', onSuccessElementEscPress);
+      successInner.addEventListener('click', function (evt) {
+        evt.stopPropagation();
+      });
+      successElement.addEventListener('click', function () {
+        successElement.remove();
+      });
+
+      return successElement;
     }
   };
 })();
