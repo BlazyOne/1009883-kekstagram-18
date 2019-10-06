@@ -25,15 +25,11 @@
 
       xhr.timeout = LOAD_TIMEOUT;
 
-      switch (type) {
-        case 'GET':
-          xhr.open('GET', url);
-          xhr.send();
-          break;
-        case 'POST':
-          xhr.open('POST', url);
-          xhr.send(data);
-          break;
+      xhr.open(type, url);
+      if (data) {
+        xhr.send(data);
+      } else {
+        xhr.send();
       }
     }
   };
