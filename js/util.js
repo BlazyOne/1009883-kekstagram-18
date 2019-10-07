@@ -46,8 +46,7 @@
       element.value = null;
     },
     createLoadErrorElement: function () {
-      var errorElement = document.querySelector('#error').content.querySelector('.error');
-      errorElement = errorElement.cloneNode(true);
+      var errorElement = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
       var errorInner = errorElement.querySelector('.error__inner');
       var errorTitle = errorElement.querySelector('.error__title');
       var errorButtons = errorElement.querySelectorAll('.error__button');
@@ -79,8 +78,7 @@
       return errorElement;
     },
     createLoadSuccessElement: function () {
-      var successElement = document.querySelector('#success').content.querySelector('.success');
-      successElement = successElement.cloneNode(true);
+      var successElement = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
       var successInner = successElement.querySelector('.success__inner');
       var successTitle = successElement.querySelector('.success__title');
       var successButtons = successElement.querySelectorAll('.success__button');
