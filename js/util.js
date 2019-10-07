@@ -44,6 +44,72 @@
     },
     clearValue: function (element) {
       element.value = null;
+    },
+    createLoadErrorElement: function () {
+      var errorElement = document.querySelector('#error').content.querySelector('.error');
+      errorElement = errorElement.cloneNode(true);
+      var errorInner = errorElement.querySelector('.error__inner');
+      var errorTitle = errorElement.querySelector('.error__title');
+      var errorButtons = errorElement.querySelectorAll('.error__button');
+
+      var onErrorElementEscPress = function (evt) {
+        window.util.isEscEvent(evt, function () {
+          errorElement.remove();
+          document.removeEventListener('keydown', onErrorElementEscPress);
+        });
+      };
+
+      errorElement.style.zIndex = '3';
+      errorTitle.style.lineHeight = '1.5';
+      document.querySelector('main').append(errorElement);
+
+      for (var i = 0; i < errorButtons.length; i++) {
+        errorButtons[i].addEventListener('click', function () {
+          errorElement.remove();
+        });
+      }
+      document.addEventListener('keydown', onErrorElementEscPress);
+      errorInner.addEventListener('click', function (evt) {
+        evt.stopPropagation();
+      });
+      errorElement.addEventListener('click', function () {
+        errorElement.remove();
+      });
+
+      return errorElement;
+    },
+    createLoadSuccessElement: function () {
+      var successElement = document.querySelector('#success').content.querySelector('.success');
+      successElement = successElement.cloneNode(true);
+      var successInner = successElement.querySelector('.success__inner');
+      var successTitle = successElement.querySelector('.success__title');
+      var successButtons = successElement.querySelectorAll('.success__button');
+
+      var onSuccessElementEscPress = function (evt) {
+        window.util.isEscEvent(evt, function () {
+          successElement.remove();
+          document.removeEventListener('keydown', onSuccessElementEscPress);
+        });
+      };
+
+      successElement.style.zIndex = '3';
+      successTitle.style.lineHeight = '1.5';
+      document.querySelector('main').append(successElement);
+
+      for (var i = 0; i < successButtons.length; i++) {
+        successButtons[i].addEventListener('click', function () {
+          successElement.remove();
+        });
+      }
+      document.addEventListener('keydown', onSuccessElementEscPress);
+      successInner.addEventListener('click', function (evt) {
+        evt.stopPropagation();
+      });
+      successElement.addEventListener('click', function () {
+        successElement.remove();
+      });
+
+      return successElement;
     }
   };
 })();

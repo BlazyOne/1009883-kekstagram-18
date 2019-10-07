@@ -31,7 +31,10 @@
     }
   };
   var EFFECTS_STYLE_PREFIX = 'effects__preview--';
+  var IMG_UPLOAD_URL = 'https://js.dump.academy/kekstagram';
+  var IMG_UPLOAD_TYPE = 'POST';
 
+  var uploadFormElement = document.querySelector('.img-upload__form');
   var uploadFileElement = document.querySelector('#upload-file');
   var uploadOverlayElement = document.querySelector('.img-upload__overlay');
   var uploadCancelElement = uploadOverlayElement.querySelector('#upload-cancel');
@@ -173,6 +176,18 @@
     renderEffects();
   };
 
+  var onPictureUploadError = function (errorMessage) {
+    var errorElement = window.util.createLoadErrorElement();
+    var errorTitle = errorElement.querySelector('.error__title');
+
+    errorTitle.textContent = 'Ошибка загрузки нового изображения. ' + errorMessage;
+  };
+
+  var onPictureUploadSuccess = function () {
+    hideUploadOverlay();
+    window.util.createLoadSuccessElement();
+  };
+
   window.formPicture = {
     uploadOverlayElement: uploadOverlayElement
   };
@@ -198,4 +213,9 @@
   setEffectsRadioListeners();
 
   effectLevelLine.addEventListener('mouseup', onEffectLineMouseUp);
+
+  uploadFormElement.addEventListener('submit', function (evt) {
+    window.backend.load(IMG_UPLOAD_URL, IMG_UPLOAD_TYPE, onPictureUploadSuccess, onPictureUploadError, new FormData(uploadFormElement));
+    evt.preventDefault();
+  });
 })();
