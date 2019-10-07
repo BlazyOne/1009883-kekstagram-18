@@ -26,11 +26,10 @@
       xhr.timeout = LOAD_TIMEOUT;
 
       xhr.open(type, url);
-      if (data) {
-        xhr.send(data);
-      } else {
-        xhr.send();
+      if (!data) {
+        data = '';
       }
+      xhr.send(data);
     }
   };
 })();
