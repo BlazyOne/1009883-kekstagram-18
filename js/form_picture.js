@@ -105,6 +105,11 @@
   };
 
   var setEffectNumber = function (value) {
+    if (value > EFFECT.effectNumber.max) {
+      value = EFFECT.effectNumber.max;
+    } else if (value < EFFECT.effectNumber.min) {
+      value = EFFECT.effectNumber.min;
+    }
     effectLevelValueElement.value = Math.round(value);
   };
 
@@ -164,18 +169,6 @@
     }
   };
 
-  var onEffectLineMouseUp = function (evt) {
-    var rectEffectLine = effectLevelLine.getBoundingClientRect();
-    var value = (evt.clientX - rectEffectLine.left) * 100 / rectEffectLine.width;
-    if (value < EFFECT.effectNumber.min) {
-      value = EFFECT.effectNumber.min;
-    } else if (value > EFFECT.effectNumber.max) {
-      value = EFFECT.effectNumber.max;
-    }
-    setEffectNumber(value);
-    renderEffects();
-  };
-
   var onPictureUploadError = function (errorMessage) {
     var errorElement = window.util.createLoadErrorElement();
     var errorTitle = errorElement.querySelector('.error__title');
@@ -212,7 +205,32 @@
 
   setEffectsRadioListeners();
 
-  effectLevelLine.addEventListener('mouseup', onEffectLineMouseUp);
+  effectLevelPinElement.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+
+    var rectEffectLine = effectLevelLine.getBoundingClientRect();
+
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      if (moveEvt.clientX >= rectEffectLine.left && moveEvt.clientX <= rectEffectLine.right) {
+        var value = (moveEvt.clientX - rectEffectLine.left) * 100 / rectEffectLine.width;
+        setEffectNumber(value);
+        renderEffects();
+        effectLevelPinElement.style.left = (moveEvt.clientX - rectEffectLine.left) + 'px';
+      }
+    };
+
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  });
 
   uploadFormElement.addEventListener('submit', function (evt) {
     window.backend.load(IMG_UPLOAD_URL, IMG_UPLOAD_TYPE, onPictureUploadSuccess, onPictureUploadError, new FormData(uploadFormElement));
