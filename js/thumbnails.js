@@ -13,7 +13,11 @@
   var filterDiscussedElement = document.querySelector('#filter-discussed');
 
   var thumbnailsData = [];
-  var sortType;
+  var FilterButtonsId = {
+    POPULAR_ID: 'filter-popular',
+    RANDOM_ID: 'filter-random',
+    DISCUSSED_ID: 'filter-discussed'
+  };
 
   var renderPhoto = function (photoObject) {
     var photoElement = pictureTemplate.cloneNode(true);
@@ -57,16 +61,19 @@
     });
   };
 
-  var updateThumbnails = function () {
+  var updateThumbnails = function (evt) {
     clearThumbnails();
     var dataCopy = thumbnailsData.slice();
-    if (sortType === 'random') {
-      window.util.shuffle(dataCopy);
-      dataCopy.length = RANDOM_AMOUNT;
-    } else if (sortType === 'discussed') {
-      dataCopy.sort(function (left, right) {
-        return right.comments.length - left.comments.length;
-      });
+    switch (evt.target.id) {
+      case FilterButtonsId.RANDOM_ID:
+        window.util.shuffle(dataCopy);
+        dataCopy = dataCopy.slice(0, RANDOM_AMOUNT);
+        break;
+      case FilterButtonsId.DISCUSSED_ID:
+        dataCopy.sort(function (left, right) {
+          return right.comments.length - left.comments.length;
+        });
+        break;
     }
     fillPhotos(dataCopy);
   };
@@ -80,7 +87,7 @@
   };
 
   var onFilterButtonClick = function (evt) {
-    debounceUpdateThumbnails();
+    debounceUpdateThumbnails(evt);
     clearFilterButtonsStyle();
     evt.target.classList.add('img-filters__button--active');
   };
@@ -88,17 +95,14 @@
   window.backend.load(PICTURES_DOWNLOAD_URL, PICTURES_DOWNLOAD_TYPE, onPicturesDownloadSuccess, onPicturesDownloadError);
 
   filterPopularElement.addEventListener('click', function (evt) {
-    sortType = 'popular';
     onFilterButtonClick(evt);
   });
 
   filterRandomElement.addEventListener('click', function (evt) {
-    sortType = 'random';
     onFilterButtonClick(evt);
   });
 
   filterDiscussedElement.addEventListener('click', function (evt) {
-    sortType = 'discussed';
     onFilterButtonClick(evt);
   });
 })();
