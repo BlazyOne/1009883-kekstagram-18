@@ -70,7 +70,5 @@
     bigPictureElement: bigPictureElement
   };
 
-  // bigPictureCommentsCounterElement.classList.add('visually-hidden');
-  // commentsLoaderElement.classList.add('visually-hidden');
   bigPictureCancelElement.addEventListener('click', hideBigPicture);
 })();
