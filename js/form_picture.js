@@ -213,11 +213,25 @@
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
 
+      var value;
       if (moveEvt.clientX >= rectEffectLine.left && moveEvt.clientX <= rectEffectLine.right) {
-        var value = (moveEvt.clientX - rectEffectLine.left) * 100 / rectEffectLine.width;
+        value = EFFECT.effectNumber.min + (moveEvt.clientX - rectEffectLine.left) * (EFFECT.effectNumber.max - EFFECT.effectNumber.min) / rectEffectLine.width;
         setEffectNumber(value);
         renderEffects();
         effectLevelPinElement.style.left = (moveEvt.clientX - rectEffectLine.left) + 'px';
+        effectLevelDepthElement.style.width = (moveEvt.clientX - rectEffectLine.left) + 'px';
+      } else if (moveEvt.clientX > rectEffectLine.right) {
+        value = EFFECT.effectNumber.max;
+        setEffectNumber(value);
+        renderEffects();
+        effectLevelPinElement.style.left = rectEffectLine.width + 'px';
+        effectLevelDepthElement.style.width = rectEffectLine.width + 'px';
+      } else if (moveEvt.clientX < rectEffectLine.left) {
+        value = EFFECT.effectNumber.min;
+        setEffectNumber(value);
+        renderEffects();
+        effectLevelPinElement.style.left = 0 + 'px';
+        effectLevelDepthElement.style.width = 0 + 'px';
       }
     };
 
