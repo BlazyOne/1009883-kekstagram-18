@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var COMMENTS_PORTION_AMOUNT = 5;
+
   var bigPictureElement = document.querySelector('.big-picture');
   var bigPictureCancelElement = bigPictureElement.querySelector('#picture-cancel');
   var commentsListElement = bigPictureElement.querySelector('.social__comments');
@@ -19,18 +21,42 @@
   };
 
   var fillBigPicture = function (photoData) {
+    var j = 0;
+    var loadCommentsPortion = function () {
+      if (j < photoData.comments.length) {
+        var fragment = document.createDocumentFragment();
+        for (var i = 0; i < COMMENTS_PORTION_AMOUNT && j < photoData.comments.length; i++, j++) {
+          fragment.appendChild(renderComment(photoData.comments[j]));
+        }
+        commentsListElement.appendChild(fragment);
+      }
+      if (j >= photoData.comments.length) {
+        commentsLoaderElement.classList.add('hidden');
+      }
+      bigPictureCommentsCounterElement.textContent = j + ' из ' + photoData.comments.length + ' комментариев';
+    };
+
+    var removeListeners = function () {
+      commentsLoaderElement.removeEventListener('click', loadCommentsPortion);
+      document.removeEventListener('keydown', onEscPress);
+    };
+
+    var onEscPress = function (evt) {
+      window.util.isEscEvent(evt, removeListeners);
+    };
+
     bigPictureElement.querySelector('.big-picture__img img').setAttribute('src', photoData.url);
     bigPictureElement.querySelector('.likes-count').textContent = photoData.likes;
-    bigPictureElement.querySelector('.comments-count').textContent = photoData.comments.length;
     bigPictureElement.querySelector('.social__caption').textContent = photoData.description;
+    commentsLoaderElement.classList.remove('hidden');
 
     window.util.clearElementContent(commentsListElement);
 
-    var fragment = document.createDocumentFragment();
-    for (var i = 0; i < photoData.comments.length; i++) {
-      fragment.appendChild(renderComment(photoData.comments[i]));
-    }
-    commentsListElement.appendChild(fragment);
+    loadCommentsPortion();
+    commentsLoaderElement.addEventListener('click', loadCommentsPortion);
+
+    bigPictureCancelElement.addEventListener('click', removeListeners);
+    document.addEventListener('keydown', onEscPress);
   };
 
   var onBigPictureEscPress = function (evt) {
@@ -53,7 +79,7 @@
     bigPictureElement: bigPictureElement
   };
 
-  bigPictureCommentsCounterElement.classList.add('visually-hidden');
-  commentsLoaderElement.classList.add('visually-hidden');
+  // bigPictureCommentsCounterElement.classList.add('visually-hidden');
+  // commentsLoaderElement.classList.add('visually-hidden');
   bigPictureCancelElement.addEventListener('click', hideBigPicture);
 })();
