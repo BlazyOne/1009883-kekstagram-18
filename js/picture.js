@@ -36,14 +36,7 @@
       bigPictureCommentsCounterElement.textContent = j + ' из ' + photoData.comments.length + ' комментариев';
     };
 
-    var removeListeners = function () {
-      commentsLoaderElement.removeEventListener('click', loadCommentsPortion);
-      document.removeEventListener('keydown', onEscPress);
-    };
-
-    var onEscPress = function (evt) {
-      window.util.isEscEvent(evt, removeListeners);
-    };
+    window.picture.loadCommentsPortion = loadCommentsPortion;
 
     bigPictureElement.querySelector('.big-picture__img img').setAttribute('src', photoData.url);
     bigPictureElement.querySelector('.likes-count').textContent = photoData.likes;
@@ -53,10 +46,7 @@
     window.util.clearElementContent(commentsListElement);
 
     loadCommentsPortion();
-    commentsLoaderElement.addEventListener('click', loadCommentsPortion);
-
-    bigPictureCancelElement.addEventListener('click', removeListeners);
-    document.addEventListener('keydown', onEscPress);
+    commentsLoaderElement.addEventListener('click', window.picture.loadCommentsPortion);
   };
 
   var onBigPictureEscPress = function (evt) {
@@ -72,6 +62,7 @@
   var hideBigPicture = function () {
     bigPictureElement.classList.add('hidden');
     document.removeEventListener('keydown', onBigPictureEscPress);
+    commentsLoaderElement.removeEventListener('click', window.picture.loadCommentsPortion);
   };
 
   window.picture = {
