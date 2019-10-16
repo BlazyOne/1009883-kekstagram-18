@@ -21,19 +21,18 @@
   };
 
   var fillBigPicture = function (photoData) {
-    var j = 0;
+    var totalCommentsCounter = 0;
     var loadCommentsPortion = function () {
-      if (j < photoData.comments.length) {
+      if (totalCommentsCounter < photoData.comments.length) {
         var fragment = document.createDocumentFragment();
-        for (var i = 0; i < COMMENTS_PORTION_AMOUNT && j < photoData.comments.length; i++, j++) {
-          fragment.appendChild(renderComment(photoData.comments[j]));
+        for (var i = 0; i < COMMENTS_PORTION_AMOUNT && totalCommentsCounter < photoData.comments.length; i++, totalCommentsCounter++) {
+          fragment.appendChild(renderComment(photoData.comments[totalCommentsCounter]));
         }
         commentsListElement.appendChild(fragment);
-      }
-      if (j >= photoData.comments.length) {
+      } else {
         commentsLoaderElement.classList.add('hidden');
       }
-      bigPictureCommentsCounterElement.textContent = j + ' из ' + photoData.comments.length + ' комментариев';
+      bigPictureCommentsCounterElement.textContent = totalCommentsCounter + ' из ' + photoData.comments.length + ' комментариев';
     };
 
     window.picture.loadCommentsPortion = loadCommentsPortion;
