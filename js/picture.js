@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var COMMENTS_PORTION_AMOUNT = 5;
+
   var bigPictureElement = document.querySelector('.big-picture');
   var bigPictureCancelElement = bigPictureElement.querySelector('#picture-cancel');
   var commentsListElement = bigPictureElement.querySelector('.social__comments');
@@ -19,18 +21,31 @@
   };
 
   var fillBigPicture = function (photoData) {
+    var totalCommentsCounter = 0;
+    var loadCommentsPortion = function () {
+      if (totalCommentsCounter < photoData.comments.length) {
+        var fragment = document.createDocumentFragment();
+        for (var i = 0; i < COMMENTS_PORTION_AMOUNT && totalCommentsCounter < photoData.comments.length; i++, totalCommentsCounter++) {
+          fragment.appendChild(renderComment(photoData.comments[totalCommentsCounter]));
+        }
+        commentsListElement.appendChild(fragment);
+      } else {
+        commentsLoaderElement.classList.add('hidden');
+      }
+      bigPictureCommentsCounterElement.textContent = totalCommentsCounter + ' из ' + photoData.comments.length + ' комментариев';
+    };
+
+    window.picture.loadCommentsPortion = loadCommentsPortion;
+
     bigPictureElement.querySelector('.big-picture__img img').setAttribute('src', photoData.url);
     bigPictureElement.querySelector('.likes-count').textContent = photoData.likes;
-    bigPictureElement.querySelector('.comments-count').textContent = photoData.comments.length;
     bigPictureElement.querySelector('.social__caption').textContent = photoData.description;
+    commentsLoaderElement.classList.remove('hidden');
 
     window.util.clearElementContent(commentsListElement);
 
-    var fragment = document.createDocumentFragment();
-    for (var i = 0; i < photoData.comments.length; i++) {
-      fragment.appendChild(renderComment(photoData.comments[i]));
-    }
-    commentsListElement.appendChild(fragment);
+    loadCommentsPortion();
+    commentsLoaderElement.addEventListener('click', window.picture.loadCommentsPortion);
   };
 
   var onBigPictureEscPress = function (evt) {
@@ -46,6 +61,7 @@
   var hideBigPicture = function () {
     bigPictureElement.classList.add('hidden');
     document.removeEventListener('keydown', onBigPictureEscPress);
+    commentsLoaderElement.removeEventListener('click', window.picture.loadCommentsPortion);
   };
 
   window.picture = {
@@ -53,7 +69,5 @@
     bigPictureElement: bigPictureElement
   };
 
-  bigPictureCommentsCounterElement.classList.add('visually-hidden');
-  commentsLoaderElement.classList.add('visually-hidden');
   bigPictureCancelElement.addEventListener('click', hideBigPicture);
 })();
