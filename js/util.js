@@ -11,20 +11,20 @@
         action();
       }
     },
-    getRandomFromArray: function (arr) {
-      return arr[Math.floor(Math.random() * arr.length)];
+    getRandomFromArray: function (data) {
+      return data[Math.floor(Math.random() * data.length)];
     },
     getRandomInRange: function (min, max) {
       return min + Math.floor(Math.random() * (max - min + 1));
     },
     // Fisher-Yates shuffle
-    shuffle: function (arr) {
-      for (var i = arr.length - 1; i > 0; i--) {
+    shuffle: function (data) {
+      for (var i = data.length - 1; i > 0; i--) {
         var j = Math.floor(Math.random() * (i + 1));
 
-        var t = arr[i];
-        arr[i] = arr[j];
-        arr[j] = t;
+        var temp = data[i];
+        data[i] = data[j];
+        data[j] = temp;
       }
     },
     clearElementContent: function (element) {
@@ -32,11 +32,11 @@
         element.removeChild(element.firstChild);
       }
     },
-    findSameInArray: function (arr) {
+    findSameInArray: function (data) {
       var foundSame = false;
-      for (var i = 0; i < arr.length; i++) {
-        for (var j = i + 1; j < arr.length; j++) {
-          if (arr[i] === arr[j]) {
+      for (var i = 0; i < data.length; i++) {
+        for (var j = i + 1; j < data.length; j++) {
+          if (data[i] === data[j]) {
             foundSame = true;
           }
         }
@@ -48,9 +48,9 @@
     },
     createLoadErrorElement: function () {
       var errorElement = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
-      var errorInner = errorElement.querySelector('.error__inner');
-      var errorTitle = errorElement.querySelector('.error__title');
-      var errorButtons = errorElement.querySelectorAll('.error__button');
+      var errorInnerElement = errorElement.querySelector('.error__inner');
+      var errorTitleElement = errorElement.querySelector('.error__title');
+      var errorButtonElements = errorElement.querySelectorAll('.error__button');
 
       var onErrorElementEscPress = function (evt) {
         window.util.isEscEvent(evt, function () {
@@ -60,16 +60,16 @@
       };
 
       errorElement.style.zIndex = '3';
-      errorTitle.style.lineHeight = '1.5';
+      errorTitleElement.style.lineHeight = '1.5';
       document.querySelector('main').append(errorElement);
 
-      for (var i = 0; i < errorButtons.length; i++) {
-        errorButtons[i].addEventListener('click', function () {
+      for (var i = 0; i < errorButtonElements.length; i++) {
+        errorButtonElements[i].addEventListener('click', function () {
           errorElement.remove();
         });
       }
       document.addEventListener('keydown', onErrorElementEscPress);
-      errorInner.addEventListener('click', function (evt) {
+      errorInnerElement.addEventListener('click', function (evt) {
         evt.stopPropagation();
       });
       errorElement.addEventListener('click', function () {
@@ -80,9 +80,9 @@
     },
     createLoadSuccessElement: function () {
       var successElement = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
-      var successInner = successElement.querySelector('.success__inner');
-      var successTitle = successElement.querySelector('.success__title');
-      var successButtons = successElement.querySelectorAll('.success__button');
+      var successInnerElement = successElement.querySelector('.success__inner');
+      var successTitleElement = successElement.querySelector('.success__title');
+      var successButtonElements = successElement.querySelectorAll('.success__button');
 
       var onSuccessElementEscPress = function (evt) {
         window.util.isEscEvent(evt, function () {
@@ -92,16 +92,16 @@
       };
 
       successElement.style.zIndex = '3';
-      successTitle.style.lineHeight = '1.5';
+      successTitleElement.style.lineHeight = '1.5';
       document.querySelector('main').append(successElement);
 
-      for (var i = 0; i < successButtons.length; i++) {
-        successButtons[i].addEventListener('click', function () {
+      for (var i = 0; i < successButtonElements.length; i++) {
+        successButtonElements[i].addEventListener('click', function () {
           successElement.remove();
         });
       }
       document.addEventListener('keydown', onSuccessElementEscPress);
-      successInner.addEventListener('click', function (evt) {
+      successInnerElement.addEventListener('click', function (evt) {
         evt.stopPropagation();
       });
       successElement.addEventListener('click', function () {
