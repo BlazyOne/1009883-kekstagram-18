@@ -33,6 +33,7 @@
   var EFFECTS_STYLE_PREFIX = 'effects__preview--';
   var IMG_UPLOAD_URL = 'https://js.dump.academy/kekstagram';
   var IMG_UPLOAD_TYPE = 'POST';
+  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
   var uploadFormElement = document.querySelector('.img-upload__form');
   var uploadFileElement = document.querySelector('#upload-file');
@@ -40,14 +41,14 @@
   var uploadCancelElement = uploadOverlayElement.querySelector('#upload-cancel');
 
   var scaleControlValueElement = uploadOverlayElement.querySelector('.scale__control--value');
-  var scaleControlSmaller = uploadOverlayElement.querySelector('.scale__control--smaller');
-  var scaleControlBigger = uploadOverlayElement.querySelector('.scale__control--bigger');
+  var scaleControlSmallerElement = uploadOverlayElement.querySelector('.scale__control--smaller');
+  var scaleControlBiggerElement = uploadOverlayElement.querySelector('.scale__control--bigger');
   var effectLevelValueElement = uploadOverlayElement.querySelector('.effect-level__value');
   var effectLevelElement = uploadOverlayElement.querySelector('.img-upload__effect-level');
   var previewImageElement = uploadOverlayElement.querySelector('.img-upload__preview img');
   var effectLevelPinElement = uploadOverlayElement.querySelector('.effect-level__pin');
   var effectLevelDepthElement = uploadOverlayElement.querySelector('.effect-level__depth');
-  var effectLevelLine = uploadOverlayElement.querySelector('.effect-level__line');
+  var effectLevelLineElement = uploadOverlayElement.querySelector('.effect-level__line');
 
   var onUploadEscPress = function (evt) {
     window.util.isEscEvent(evt, hideUploadOverlay);
@@ -68,6 +69,8 @@
     document.removeEventListener('keydown', onUploadEscPress);
     uploadOverlayElement.querySelector('#effect-none').checked = true;
     setEffectNumber(EFFECT.effectNumber.max);
+    window.formValidity.hashtagsInputElement.value = '';
+    window.formValidity.descriptionInputElement.value = '';
   };
 
   var getScaleNumber = function () {
@@ -159,10 +162,10 @@
   };
 
   var setEffectsRadioListeners = function () {
-    var effectRadiosElements = uploadOverlayElement.querySelectorAll('input[name="effect"]');
+    var effectRadioElements = uploadOverlayElement.querySelectorAll('input[name="effect"]');
 
-    for (var i = 0; i < effectRadiosElements.length; i++) {
-      effectRadiosElements[i].addEventListener('change', function () {
+    for (var i = 0; i < effectRadioElements.length; i++) {
+      effectRadioElements[i].addEventListener('change', function () {
         setEffectNumber(EFFECT.effectNumber.max);
         renderEffects();
       });
@@ -171,9 +174,9 @@
 
   var onPictureUploadError = function (errorMessage) {
     var errorElement = window.util.createLoadErrorElement();
-    var errorTitle = errorElement.querySelector('.error__title');
+    var errorTitleElement = errorElement.querySelector('.error__title');
 
-    errorTitle.textContent = 'Ошибка загрузки нового изображения. ' + errorMessage;
+    errorTitleElement.textContent = 'Ошибка загрузки нового изображения. ' + errorMessage;
   };
 
   var onPictureUploadSuccess = function () {
@@ -181,11 +184,34 @@
     window.util.createLoadSuccessElement();
   };
 
+  var setPreviewImage = function () {
+    var file = uploadFileElement.files[0];
+    var filename = file.name.toLowerCase();
+
+    var matches = FILE_TYPES.some(function (it) {
+      return filename.endsWith(it);
+    });
+
+    if (matches) {
+      var reader = new FileReader();
+
+      reader.addEventListener('load', function () {
+        previewImageElement.src = reader.result;
+        document.querySelectorAll('.effects__preview').forEach(function (it) {
+          it.style.backgroundImage = 'url(' + reader.result + ')';
+        });
+      });
+
+      reader.readAsDataURL(file);
+    }
+  };
+
   window.formPicture = {
     uploadOverlayElement: uploadOverlayElement
   };
 
   uploadFileElement.addEventListener('change', function () {
+    setPreviewImage();
     showUploadOverlay();
   });
 
@@ -193,12 +219,12 @@
     hideUploadOverlay();
   });
 
-  scaleControlSmaller.addEventListener('click', function () {
+  scaleControlSmallerElement.addEventListener('click', function () {
     setScaleSmaller();
     renderScale();
   });
 
-  scaleControlBigger.addEventListener('click', function () {
+  scaleControlBiggerElement.addEventListener('click', function () {
     setScaleBigger();
     renderScale();
   });
@@ -208,7 +234,7 @@
   effectLevelPinElement.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
-    var rectEffectLine = effectLevelLine.getBoundingClientRect();
+    var rectEffectLine = effectLevelLineElement.getBoundingClientRect();
 
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();

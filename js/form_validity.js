@@ -11,34 +11,40 @@
   var checkHashtagValidity = function () {
     var hashtagString = hashtagsInputElement.value;
     hashtagString = hashtagString.toLowerCase();
-    var hashtagArray = hashtagString.split(' ');
+    var hashtags = hashtagString.split(' ');
     var validityMessage = '';
 
-    for (var i = 0; i < hashtagArray.length; i++) {
-      if ((hashtagArray[i].indexOf(',') > -1 || hashtagArray[i].indexOf(';') > -1) && !isSpaces) {
+    for (var i = 0; i < hashtags.length; i++) {
+      if ((hashtags[i].indexOf(',') > -1 || hashtags[i].indexOf(';') > -1) && !isSpaces) {
         validityMessage += 'Хэштеги должны разделяться пробелами. ';
         var isSpaces = true;
       }
-      if (hashtagArray[i][0] !== '#' && !isNoHashSign) {
+      if (hashtags[i][0] !== '#' && !isNoHashSign) {
         validityMessage += 'Хэш-тег должен начинаться с символа #. ';
         var isNoHashSign = true;
       }
-      if (hashtagArray[i].length === 1 && !isOneCharacterLength) {
+      if (hashtags[i].length === 1 && !isOneCharacterLength) {
         validityMessage += 'Хеш-тег не может состоять только из одной решётки. ';
         var isOneCharacterLength = true;
       }
-      if (window.util.findSameInArray(hashtagArray) && !isSameInArray) {
+      if (window.util.findSameInArray(hashtags) && !isSameInArray) {
         validityMessage += 'Один и тот же хэш-тег не может быть использован дважды. ';
         var isSameInArray = true;
       }
-      if (hashtagArray.length > HASHTAG_MAX_NUMBER && !isMoreThanMaxHashtagNumber) {
+      if (hashtags.length > HASHTAG_MAX_NUMBER && !isMoreThanMaxHashtagNumber) {
         validityMessage += 'Нельзя указать больше ' + HASHTAG_MAX_NUMBER + ' хэш-тегов. ';
         var isMoreThanMaxHashtagNumber = true;
       }
-      if (hashtagArray[i].length > HASHTAG_MAX_LENGTH && !isMoreThanMaxHashtagLength) {
+      if (hashtags[i].length > HASHTAG_MAX_LENGTH && !isMoreThanMaxHashtagLength) {
         validityMessage += 'Максимальная длина одного хэш-тега ' + HASHTAG_MAX_LENGTH + ' символов, включая решётку. ';
         var isMoreThanMaxHashtagLength = true;
       }
+    }
+
+    if (validityMessage) {
+      hashtagsInputElement.style.outline = '1px solid red';
+    } else {
+      hashtagsInputElement.style.outline = '';
     }
 
     hashtagsInputElement.setCustomValidity(validityMessage);
@@ -47,9 +53,16 @@
   var checkDescriptionValidity = function () {
     if (descriptionInputElement.value.length > DESCRIPTION_MAX_LENGTH) {
       descriptionInputElement.setCustomValidity('длина комментария не может составлять больше 140 символов');
+      descriptionInputElement.style.outline = '1px solid red';
     } else {
       descriptionInputElement.setCustomValidity('');
+      descriptionInputElement.style.outline = '';
     }
+  };
+
+  window.formValidity = {
+    hashtagsInputElement: hashtagsInputElement,
+    descriptionInputElement: descriptionInputElement
   };
 
   hashtagsInputElement.addEventListener('keydown', function (evt) {

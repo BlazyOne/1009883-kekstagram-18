@@ -5,7 +5,7 @@
   var PICTURES_DOWNLOAD_TYPE = 'GET';
   var RANDOM_AMOUNT = 10;
 
-  var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
+  var pictureTemplateElement = document.querySelector('#picture').content.querySelector('.picture');
   var picturesElement = document.querySelector('.pictures');
   var filterButtonElements = document.querySelectorAll('.img-filters__button');
   var filterPopularElement = document.querySelector('#filter-popular');
@@ -20,7 +20,7 @@
   };
 
   var renderPhoto = function (photoObject) {
-    var photoElement = pictureTemplate.cloneNode(true);
+    var photoElement = pictureTemplateElement.cloneNode(true);
 
     photoElement.querySelector('.picture__img').setAttribute('src', photoObject.url);
     photoElement.querySelector('.picture__likes').textContent = photoObject.likes;
@@ -43,9 +43,9 @@
 
   var onPicturesDownloadError = function (errorMessage) {
     var errorElement = window.util.createLoadErrorElement();
-    var errorTitle = errorElement.querySelector('.error__title');
+    var errorTitleElement = errorElement.querySelector('.error__title');
 
-    errorTitle.textContent = 'Ошибка загрузки файла изображений. ' + errorMessage;
+    errorTitleElement.textContent = 'Ошибка загрузки файла изображений. ' + errorMessage;
   };
 
   var onPicturesDownloadSuccess = function (data) {
