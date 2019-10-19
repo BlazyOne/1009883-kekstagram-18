@@ -33,15 +33,9 @@
       }
     },
     findSameInArray: function (data) {
-      var foundSame = false;
-      for (var i = 0; i < data.length; i++) {
-        for (var j = i + 1; j < data.length; j++) {
-          if (data[i] === data[j]) {
-            foundSame = true;
-          }
-        }
-      }
-      return foundSame;
+      return data.some(function (it, index) {
+        return data.indexOf(it) !== index;
+      });
     },
     clearValue: function (element) {
       element.value = null;
@@ -63,11 +57,11 @@
       errorTitleElement.style.lineHeight = '1.5';
       document.querySelector('main').append(errorElement);
 
-      for (var i = 0; i < errorButtonElements.length; i++) {
-        errorButtonElements[i].addEventListener('click', function () {
+      errorButtonElements.forEach(function (it) {
+        it.addEventListener('click', function () {
           errorElement.remove();
         });
-      }
+      });
       document.addEventListener('keydown', onErrorElementEscPress);
       errorInnerElement.addEventListener('click', function (evt) {
         evt.stopPropagation();
@@ -95,11 +89,11 @@
       successTitleElement.style.lineHeight = '1.5';
       document.querySelector('main').append(successElement);
 
-      for (var i = 0; i < successButtonElements.length; i++) {
-        successButtonElements[i].addEventListener('click', function () {
+      successButtonElements.forEach(function (it) {
+        it.addEventListener('click', function () {
           successElement.remove();
         });
-      }
+      });
       document.addEventListener('keydown', onSuccessElementEscPress);
       successInnerElement.addEventListener('click', function (evt) {
         evt.stopPropagation();

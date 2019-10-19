@@ -19,7 +19,7 @@
         validityMessage += 'Хэштеги должны разделяться пробелами. ';
         var isSpaces = true;
       }
-      if (hashtags[i][0] !== '#' && !isNoHashSign) {
+      if (hashtags[i][0] !== '#' && !isNoHashSign && hashtagsInputElement.value) {
         validityMessage += 'Хэш-тег должен начинаться с символа #. ';
         var isNoHashSign = true;
       }

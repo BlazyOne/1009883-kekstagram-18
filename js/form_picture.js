@@ -70,7 +70,11 @@
     uploadOverlayElement.querySelector('#effect-none').checked = true;
     setEffectNumber(EFFECT.effectNumber.max);
     window.formValidity.hashtagsInputElement.value = '';
+    window.formValidity.hashtagsInputElement.setCustomValidity('');
+    window.formValidity.hashtagsInputElement.style.outline = '';
     window.formValidity.descriptionInputElement.value = '';
+    window.formValidity.descriptionInputElement.setCustomValidity('');
+    window.formValidity.descriptionInputElement.style.outline = '';
   };
 
   var getScaleNumber = function () {

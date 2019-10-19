@@ -27,7 +27,7 @@
     photoElement.querySelector('.picture__comments').textContent = photoObject.comments.length;
 
     photoElement.addEventListener('click', function () {
-      window.picture.showBigPicture(photoObject);
+      window.image.showBigPicture(photoObject);
     });
 
     return photoElement;
@@ -35,9 +35,9 @@
 
   var fillPhotos = function (photosData) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < photosData.length; i++) {
-      fragment.appendChild(renderPhoto(photosData[i]));
-    }
+    photosData.forEach(function (it) {
+      fragment.appendChild(renderPhoto(it));
+    });
     picturesElement.appendChild(fragment);
   };
 
