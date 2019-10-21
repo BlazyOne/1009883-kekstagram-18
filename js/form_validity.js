@@ -13,33 +13,39 @@
     hashtagString = hashtagString.toLowerCase();
     var hashtags = hashtagString.split(' ');
     var validityMessage = '';
+    var isSpaces = false;
+    var isNoHashSign = false;
+    var isOneCharacterLength = false;
+    var isSameInArray = false;
+    var isMoreThanMaxHashtagNumber = false;
+    var isMoreThanMaxHashtagLength = false;
 
-    for (var i = 0; i < hashtags.length; i++) {
-      if ((hashtags[i].indexOf(',') > -1 || hashtags[i].indexOf(';') > -1) && !isSpaces) {
+    hashtags.forEach(function (it) {
+      if ((it.indexOf(',') > -1 || it.indexOf(';') > -1) && !isSpaces) {
         validityMessage += 'Хэштеги должны разделяться пробелами. ';
-        var isSpaces = true;
+        isSpaces = true;
       }
-      if (hashtags[i][0] !== '#' && !isNoHashSign && hashtagsInputElement.value) {
+      if (it[0] !== '#' && !isNoHashSign && it[0]) {
         validityMessage += 'Хэш-тег должен начинаться с символа #. ';
-        var isNoHashSign = true;
+        isNoHashSign = true;
       }
-      if (hashtags[i].length === 1 && !isOneCharacterLength) {
+      if (it.length === 1 && !isOneCharacterLength) {
         validityMessage += 'Хеш-тег не может состоять только из одной решётки. ';
-        var isOneCharacterLength = true;
+        isOneCharacterLength = true;
       }
       if (window.util.findSameInArray(hashtags) && !isSameInArray) {
         validityMessage += 'Один и тот же хэш-тег не может быть использован дважды. ';
-        var isSameInArray = true;
+        isSameInArray = true;
       }
       if (hashtags.length > HASHTAG_MAX_NUMBER && !isMoreThanMaxHashtagNumber) {
         validityMessage += 'Нельзя указать больше ' + HASHTAG_MAX_NUMBER + ' хэш-тегов. ';
-        var isMoreThanMaxHashtagNumber = true;
+        isMoreThanMaxHashtagNumber = true;
       }
-      if (hashtags[i].length > HASHTAG_MAX_LENGTH && !isMoreThanMaxHashtagLength) {
+      if (it.length > HASHTAG_MAX_LENGTH && !isMoreThanMaxHashtagLength) {
         validityMessage += 'Максимальная длина одного хэш-тега ' + HASHTAG_MAX_LENGTH + ' символов, включая решётку. ';
-        var isMoreThanMaxHashtagLength = true;
+        isMoreThanMaxHashtagLength = true;
       }
-    }
+    });
 
     if (validityMessage) {
       hashtagsInputElement.style.outline = '1px solid red';

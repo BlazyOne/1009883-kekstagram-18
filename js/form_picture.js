@@ -168,12 +168,12 @@
   var setEffectsRadioListeners = function () {
     var effectRadioElements = uploadOverlayElement.querySelectorAll('input[name="effect"]');
 
-    for (var i = 0; i < effectRadioElements.length; i++) {
-      effectRadioElements[i].addEventListener('change', function () {
+    effectRadioElements.forEach(function (it) {
+      it.addEventListener('change', function () {
         setEffectNumber(EFFECT.effectNumber.max);
         renderEffects();
       });
-    }
+    });
   };
 
   var onPictureUploadError = function (errorMessage) {
