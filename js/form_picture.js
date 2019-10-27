@@ -56,6 +56,7 @@
 
   var showUploadOverlay = function () {
     uploadOverlayElement.classList.remove('hidden');
+    document.body.classList.add('modal-open');
     document.addEventListener('keydown', onUploadEscPress);
     setScaleNumber(SCALE_MAX);
     renderScale();
@@ -66,6 +67,7 @@
   var hideUploadOverlay = function () {
     window.util.clearValue(uploadFileElement);
     uploadOverlayElement.classList.add('hidden');
+    document.body.classList.remove('modal-open');
     document.removeEventListener('keydown', onUploadEscPress);
     uploadOverlayElement.querySelector('#effect-none').checked = true;
     setEffectNumber(EFFECT.effectNumber.max);
