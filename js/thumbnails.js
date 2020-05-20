@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var PICTURES_DOWNLOAD_URL = 'https://js.dump.academy/kekstagram/data';
+  var PICTURES_DOWNLOAD_URL = 'https://javascript.pages.academy/kekstagram/data';
   var PICTURES_DOWNLOAD_TYPE = 'GET';
   var RANDOM_AMOUNT = 10;
 

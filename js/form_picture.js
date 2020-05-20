@@ -31,7 +31,7 @@
     }
   };
   var EFFECTS_STYLE_PREFIX = 'effects__preview--';
-  var IMG_UPLOAD_URL = 'https://js.dump.academy/kekstagram';
+  var IMG_UPLOAD_URL = 'https://javascript.pages.academy/kekstagram';
   var IMG_UPLOAD_TYPE = 'POST';
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
